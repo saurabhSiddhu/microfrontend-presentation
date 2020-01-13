@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Microfrontend</title>
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/beige.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <style>
+        table {
+            /* font-family: arial, sans-serif; */
+            /* border-collapse: collapse; */
+            width: 100%;
+            font-size: 30px !important;
+        }
+        
+        td,
+        th {
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        /* tr:nth-child(even) {
+  background-color: #dddddd;
+} */
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <section>
+                    <img src="./assets//welcome-1.jpg" height="400" alt="">
+                    <aside class="notes">
+                        Please feel free to ask questions, we try to answer if we feel its a small one, otherwise, we take it in QA
+                    </aside>
+                </section>
+            </section>
+            <section>
+              <section>
+                  <h2 class="color1">Agenda</h2>
+                  <aside class="notes">
+                    The idea behind Micro Frontend is to splicing of website into independent modules
+                    on the basis of different features. We have different features like attendance, payroll, leave in linckia. 
+                    If we divide linckia into seperate independent project on the basis of feature then we have micro frontend architecture.
+                  </aside>
+              </section>
+            </section>
+            <section>
+              <section>
+                  <h2 class="color1">Challenges we have in frontend</h2> 
+              </section>
+              <section>
+                <h2 class="color1">Flexibility</h2>
+                <aside class="notes">
+                   There are times when it becomes absolutely neccessary to change technology. Maybe current technology becomes deprecrated or maybe
+                   it's not popular anymore so it's not easy to find developers who can work on it or maybe current technology not suited for problem we trying to solve.
+                   But if we change technology of project having large codebase then it will take huge effort and time.
+                   As it happens when we switch from angularjs to Angular 2.
+                </aside>
+              </section>
+              <section>
+                <h2 class="color1">Upgrading Framework</h2>
+                <aside class="notes">
+                  It's not easy to upgrade a project when different teams working on same codebase. When I was ugrading angular 5
+                  to angular 7 there were lots of issues coming because other teams pushing code parallely. So as I was giving new release
+                  then new bugs comes up. Also I had made changes in around 300 files so it was very difficult to review and test it.
+                </aside>
+              </section>
+              <section>
+                  <h2 class="color1">Refactoring code</h2>
+                  <pre>
+                    <code>
+                        import {Component, OnInit} from '@angular/core';
+                        import {Store} from '@ngrx/store';
+                        import {FormGroup} from '@angular/forms';
+                        import {LoginForm} from '../../../../app/core/models/LoginForm';
+                        import {AppState} from '../../../../app/core/store/reducers/index';
+                        import {LoginAction} from '../../../../app/core/store/actions/user/LoginAction';
+
+                        @Component({
+                          selector: 'gt-login-form',
+                          templateUrl: 'gt-login-form.component.html',
+                          styleUrls: ['gt-login-form.component.scss']
+                        })
+                        export class GtLoginFormComponent implements OnInit {
+                          public model: LoginForm;
+
+                          constructor(private store: Store<AppState>) {
+                          }
+
+                          public ngOnInit() {
+                            this.model = {
+                              username: '', 
+                              password: '',
+                              valid: false
+                            };
+                          }
+
+                          public onSubmit(loginForm: FormGroup) {
+                            this.model.valid = loginForm.valid;
+                            this.store.dispatch(new LoginAction(this.model));
+                          }
+                        }
+                    </code>
+                  </pre>
+                  <aside class="notes">
+                     This is GtLoginFormComponent. No one is using it right now. But it is still part of linckia's build.
+                     There may be so many things which is not used but still be part of our codebase. It's not easy to clean codebase when
+                     you have large codebase and modules are too tightly coupled with each other. Our technical debt keep on increasing. 
+                  </aside>
+              </section>
+              <section>
+                <h2 class="color1">Performance</h2>
+                <aside class="notes">
+                  When we opens attendance page, we loads many components, service, css which it not needs to work. This is huge performance
+                  hindrance. We should load only those thing which it need. This problem keep on increasing as we add new module. There is no 
+                  proper mechnasim for loading resourse.
+                </aside>
+              </section>
+              <section>
+                <h2 class="color1">Testing</h2>
+                <aside class="notes">
+                  With current architecture it's diffcult to do testing. Even for small change we have to test entire application.
+                </aside>
+              </section>
+              <section>
+                <h2 class="color1">Code consistency, Coding standard</h2>
+                <aside class="notes">
+                    When different team working across on same project then it's pretty hard to maintain contistency. 
+                    For example in linckia in some place we have used store for state management and in some place we are using service. 
+                    So code readablity decreased
+                </aside>
+              </section>
+              <section>
+                <h2 class="color1">Resilence</h2>
+                <aside class="notes">
+                    It may happen if someone has written bad code then it may effect whole project.
+                </aside>
+              </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">What is Microfrontend?</h2>
+                    <aside>
+                      The idea is to think about a website as a composition of features. 
+                      On the basis of these feature, front-end app is decomposed into individual, semi-independent “microapps” which is loosely coupled.
+                      Each microapp can be managed by individual team.
+                      
+                    </aside>
+                </section>
+                <!-- <section>
+                    <h2 class="color1">What is Microfrontend?</h2>
+                </section> -->
+                <!-- <section>
+                    <h2>Small group of humble, hardworking developers</h2>
+                    <aside class="notes">
+                        Small teams produce quality outputs
+                    </aside>
+                </section>
+                <section>
+                    <h5 class="subt">We believe</h5>
+                    <h3 style="color:darkcyan">“LEARNING IS NOT ATTAINED BY CHANCE, IT MUST BE SOUGHT FOR WITH ARDOR AND ATTENDED TO WITH DILIGENCE.” ― ABIGAIL ADAMS</h3>
+                </section> -->
+            </section>
+           
+
+            <section>
+                <section>
+                    <h2 class="color1">Benefits of Microfrontend</h2>
+                </section>
+                <section>
+                    <h2>We Code 💻💻🎧🎧! a.k.a We develop apps 💻📱</h2>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2 class="color1">What are we good at?</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Our Skills</h5>
+                    <ul>
+                        <li>React and React Native <span class="emoji"> ⚛️</span></li>
+                        <li>
+                            Angular, Vue, Elm, Svelte, Mithril, Nodejs, Hapijs, Expressjs, Elixir
+                        </li>
+                        <li>Platforms <span class="emoji">🖥️📱</span> - Web and Mobile(IOS/Android)</li>
+                        <li>End to end solutions - Dev to Deployment</li>
+                    </ul>
+                    <aside class="notes">
+                        Elm - functional language/redux architecture Svelte - framework/No runtime frameworks/focus on build time/no virtual dom diffing is inspired from this Mithril - another small framework/hyperscript/very lightweight
+                    </aside>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2 class="color1">How do we approach a project?</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Our Approach</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">You ask us to develop an application for you!</li>
+                        <li class="fragment fade-in-then-semi-out">We say sure <span class="emoji">🙂</span>, Absolutely!</li>
+                        <li class="fragment fade-in-then-semi-out">We ask you to provide us the design</li>
+                        <li class="fragment fade-in-then-semi-out">We do a research on the design provided</li>
+                        <li class="fragment fade-in-then-semi-out">
+                            We propose an architecture and tools that suits the design
+                        </li>
+                        <li class="fragment fade-in-then-semi-out">You review and approve of the same <span class="emoji">🤝🤝</span></li>
+                    </ul>
+                </section>
+                <aside class="notes">
+                    research- no of pages in the design, list the features in the pages, possible need of libraries or any other tools, testing effort etc
+                </aside>
+                <section>
+                    <h5 class="subt">Our Approach</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">We start coding <span class="emoji">💻🎧</span>!</li>
+                        <li class="fragment fade-in-then-semi-out">We provide biweekly updates on the progress</li>
+                        <li class="fragment fade-in-then-semi-out">We ship the product</li>
+                        <li class="fragment fade-in-then-semi-out">We handover the code along with documentation and KT</li>
+                        <li class="fragment fade-in-then-semi-out">We thank you for working with us <span class="emoji">🙂</span></li>
+                    </ul>
+                    <aside class="notes">
+                        documentation - architecture, setting up local, file structre, libraries used, best practices used
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Why React Native? Why not something else?</h2>
+                </section>
+                <section>
+                    <h5 class="subt">RN/Flutter Comparison</h5>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>React Native</th>
+                            <th>Flutter</th>
+                        </tr>
+                        <tr>
+                            <td>Programming Language</td>
+                            <td>Javascript</td>
+                            <td>Dart</td>
+                        </tr>
+                        <tr>
+                            <td>Learnig Curve</td>
+                            <td>Less</td>
+                            <td>More</td>
+                        </tr>
+                        <tr>
+                            <td>Development Time</td>
+                            <td>Less</td>
+                            <td>More</td>
+                        </tr>
+                        <tr>
+                            <td>Maturity</td>
+                            <td>More - 2015, 3 years in the market</td>
+                            <td>Less - 2017</td>
+                        </tr>
+                        <tr style="border-bottom:2px solid black">
+                            <td>Usage</td>
+                            <td>Walmart, AirBnb, Wix, Uber</td>
+                            <td>Alibaba, Tencent,</td>
+                        </tr>
+                    </table>
+
+                    <aside class="notes">
+                        Flutter uses more memory than RN, but it CPU usage was less than RN
+                    </aside>
+                </section>
+                <section>
+                    <h5 class="subt">RN/Flutter Comparison</h5>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>React Native</th>
+                            <th>Flutter</th>
+                        </tr>
+                        <tr>
+                            <td>Developer experience</td>
+                            <td>Very good</td>
+                            <td>not so good</td>
+                        </tr>
+                        <tr>
+                            <td>Ecosystem/Community</td>
+                            <td>Large and Inclusive</td>
+                            <td>Small and less inclusive</td>
+                        </tr>
+                        <tr>
+                            <td>Github Stars(popularity)</td>
+                            <td>78704</td>
+                            <td>69039</td>
+                        </tr>
+                        <tr>
+                            <td>Github Issues</td>
+                            <td>542</td>
+                            <td>5000+</td>
+                        </tr>
+
+                        <tr style="border-bottom:2px solid black">
+                            <td>Performance</td>
+                            <td>Both on similar level</td>
+                            <td>Both on similar level</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2 class="color1">What we keep in mind(Considerations)</h2>
+                </section>
+                <section>
+                    <h3 style="color: #cc5776;">We pay very close attention to</h3>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">Domain Driven Design</li>
+                        <li class="fragment fade-in-then-semi-out">Setup/Starter Kits</li>
+                        <li class="fragment fade-in-then-semi-out">Application Navigation</li>
+                        <li class="fragment fade-in-then-semi-out">Application Storage</li>
+                        <li class="fragment fade-in-then-semi-out">Application Security</li>
+                        <li class="fragment fade-in-then-semi-out">Unit Testing</li>
+                        <li class="fragment fade-in-then-semi-out">Bug/Crash Reporting</li>
+                        <li class="fragment fade-in-then-semi-out">Deployment/CI/CD</li>
+                        <li class="fragment fade-in-then-semi-out">Best coding practices</li>
+                    </ul>
+                    <aside class="notes">
+                        Domain Driven Design - Eric J. Evans Security - Use as less third party libraries as possible and only add reliable/trusted ones Encryption of the sensitive data like userifo stored in application Authirized APIs - Provided APIs High level user authentication using Oauth 2.0/JWT/Open ID Oauth2.0 - Authorization Service Authentication Server/Resource Server Auth Grant-->Auth Code(Auth Server)->Access token(Resource Server) Open ID - Athenticaton Service Session Handling
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Example tools we consider for the project</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Glimpse - Tools/Libraries</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">Setting up - React Native CLI/Expo CLI/Ignite CLI</li>
+                        <li class="fragment fade-in-then-semi-out">Navigation - React Navigation/React Native Navigation</li>
+                        <li class="fragment fade-in-then-semi-out">Application State - Redux</li>
+                        <li class="fragment fade-in-then-semi-out">Testing - Jest/Enzyme/Detox</li>
+                        <li class="fragment fade-in-then-semi-out">Error/Crash Reporting - Bugsnag/Instabug/Sentry</li>
+                        <li class="fragment fade-in-then-semi-out">CI/CD - Visual Studio App Center</li>
+                        <li class="fragment fade-in-then-semi-out">Deployment - Codepush/Fastlane</li>
+                    </ul>
+                </section>
+                <aside class="notes">
+                    React Native CLI - like nodejs without express/hapijs, no libraries attached, Expo - SDK on top of RN, Binaries are provided, Rich set of APIs for push notifications, Secure Storage, geofencing, Social Authentication, Camera, native graphics No need to handle native files etc Cost - SDK size React Navigation - Web solution RNN - Native solution, good for existing apps
+                </aside>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Our coding practices</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Some of our coding Practices</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">We go with both Android/IOS from the beginning</li>
+                        <li class="fragment fade-in-then-semi-out">We try to keep a minimal amount of libraries</li>
+                        <li class="fragment fade-in-then-semi-out">Very careful on directory structure - Ducks pattern(feature first) for medium/large apps</li>
+                        <li class="fragment fade-in-then-semi-out">Seperation of Smart(Data) and Dumb(UI) components</li>
+                        <li class="fragment fade-in-then-semi-out">We break down components into small functional ones</li>
+                        <li class="fragment fade-in-then-semi-out">We try to use directory resolutions</li>
+                    </ul>
+                </section>
+                <section>
+                    <h5 class="subt">Few more!</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">No nested ternaries!</li>
+                        <li class="fragment fade-in-then-semi-out">We think about styling from beginning of the app</li>
+                        <li class="fragment fade-in-then-semi-out">Lock dependencies to prevent breaking changes</li>
+                        <li class="fragment fade-in-then-semi-out">Unit testing components, we try TDD! depends on project deadline</li>
+                        <li class="fragment fade-in-then-semi-out">Strict peer review/merging strategies</li>
+                        <li class="fragment fade-in-then-semi-out">We always keep an eye on best practices around the ecosystem</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Tools we use for project management</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Tools - Project Management</h5>
+                    <ul>
+                        <li>PM - Trello</li>
+                        <li>Communication - Gmail <span class="emoji">📧</span>, Hangouts</li>
+                        <li>Repository - Github/Bitbucket</li>
+                        <li>Development - VSCode/Android Studio/XCode</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Our Assumptions</h2>
+                </section>
+                <section>
+                    <h5 class="subt">We Assume</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">You provide us the design</li>
+                        <li class="fragment fade-in-then-semi-out">You give the minimum version numbers for IOS/Android</li>
+                        <li class="fragment fade-in-then-semi-out">We own the repo until its matured</li>
+                        <li class="fragment fade-in-then-semi-out">We give code walkthrough periodically</li>
+                    </ul>
+                </section>
+                <section>
+                    <h5 class="subt">We Assume</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">
+                            You manage subscriptions of integrations - SMS/Email/Error Reporting
+                        </li>
+                        <li class="fragment fade-in-then-semi-out">You provide the Apple/Google developer accounts</li>
+                        <li class="fragment fade-in-then-semi-out">
+                            You handle the physical device testing in multiple devices before production
+                        </li>
+                        <li class="fragment fade-in-then-semi-out">Very importantly, you BELIEVE IN us!</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Why Us?</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Why Us?</h5>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">Trust - Because you know us! <span class="emoji">🤝❤️</span></li>
+                        <li class="fragment fade-in-then-semi-out">We produce quality code</li>
+                        <li class="fragment fade-in-then-semi-out">Communication 📞 is easy between us, as we know each other</li>
+                        <li class="fragment fade-in-then-semi-out">Our team is a group of trusted, matured developers</li>
+                        <li class="fragment fade-in-then-semi-out">We are good at getting the job done <span class="emoji">🙂</span></li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">Screenshots of the app we are working on</h2>
+                </section>
+                <section>
+                    <h5 class="subt">Samples</h5>
+                    <img src="./assets/img1.png" height="400" alt="" style="margin-right: 30px;" />
+                    <img src="./assets/img2.png" height="400" alt="" />
+                </section>
+                <section>
+                    <h5 class="subt">Samples</h5>
+                    <img src="./assets/img3.png" height="400" alt="" style="margin-right: 30px;" />
+                    <img src="./assets/img4.png" height="400" alt="" />
+                </section>
+                <section>
+                    <h5 class="subt">What's Behind - Tools</h5>
+                    <ul>
+                        <li>React Native CLI</li>
+                        <li>Backend - Elixir</li>
+                        <li>Navigatoin - React Navigation</li>
+                        <li>App State/Storage - Redux/AsyncStorage</li>
+                        <li>Testing - Jest</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">QA</h2>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2 class="color1">What's next?</h2>
+                </section>
+                <section>
+                    <h2>If you are happy? let's 🤝🤝</h2>
+                </section>
+                <section>
+                    <h2>
+              If you are not, No problem at all, thank you for the opportunity🙂
+            </h2>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <img src="./assets//Thank_you_icon.jpg" height="600" alt="" />
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // More info about config & dependencies:
+        // - https://github.com/hakimel/reveal.js#configuration
+        // - https://github.com/hakimel/reveal.js#dependencies
+        Reveal.initialize({
+            dependencies: [{
+                src: 'plugin/markdown/marked.js'
+            }, {
+                src: 'plugin/markdown/markdown.js'
+            }, {
+                src: 'plugin/notes/notes.js',
+                async: true
+            }, {
+                src: 'plugin/highlight/highlight.js',
+                async: true
+            }]
+        });
+    </script>
+</body>
+
+</html>

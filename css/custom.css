@@ -1,0 +1,16 @@
+ul>li{
+font-style: italic !important;
+}
+.color1{
+    color: #23a4bb !important;
+
+}
+.subt{
+   color: #7983d8 !important;
+   text-align: left;
+   text-decoration: underline;
+}
+
+.emoji{
+    font-style: initial;
+}
