@@ -14,3 +14,15 @@ font-style: italic !important;
 .emoji{
     font-style: initial;
 }
+
+.images-thumnail img{
+    max-width: 150px;
+    border: none!important;
+    box-shadow: none !important;
+    height: auto;
+    margin: 20px!important;
+    text-align: center;
+    display: inline-flex;
+    vertical-align: middle;
+
+}
