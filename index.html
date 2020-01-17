@@ -45,23 +45,25 @@
 <body>
     <div class="reveal">
         <div class="slides">
-
             <section>
                 <section>
                     <img src="./assets//welcome-1.jpg" height="400" alt="">
                     <aside class="notes">
                         Please feel free to ask questions, we try to answer if we feel its a small one, otherwise, we take it in QA
                     </aside>
-                </section>
-                
+                </section>         
             </section>
             <section>
                 <section>
                     <h2 class="color1">Agenda</h2>
-                    <aside class="notes">
-                        The idea behind Micro Frontend is to splicing of website into independent modules
-                        on the basis of different features. We have different features like attendance, payroll, leave in linckia. 
-                        If we divide linckia into seperate independent project on the basis of feature then we have micro frontend architecture.
+                    <li class="fragment fade-in-then-semi-out">Current State</li>
+                    <li class="fragment fade-in-then-semi-out">Evolution of Web Development</li>
+                    <li class="fragment fade-in-then-semi-out">Why we need Microfrontend?</li>
+                    <li class="fragment fade-in-then-semi-out">Microfrontend architecture flow</li>
+
+                    <aside class="notes">                
+                        
+                        
                     </aside>
                 </section>
             </section>
@@ -95,21 +97,33 @@
             <section>
                 <section>
                     <h2 class="color1">Evolution of Web Development</h2>
+                    <aside class="notes">
+                       Before moving to micro front-end, let's go back from where we came
+                    </aside>
                 </section>
                 <section>
                     <img src="./assets/monolith-frontback-microservices.png" height="500" alt="">
+                    <aside class="notes">
+                      In the beginning, we have monolithic system where everything is bundled up inside a single deployable 
+                      unit. This monolithic used backend templating engine like freemarkup and jquery for ui. The system
+                      is highly coupled. 
+                      As SPA become popular we split big monolithic into two parts front-end and backend. Now we have front-end team and backend team
+                      which working with more focussed view of app and code became more maintainable.
+                      But as application grows bigger and complex it became not feasable to build everything in single project so we divided  backend into small services.
+                      In all these common is front-end remain monolithic. In recent time the frontend layer became more and more sophisticated. User expect more interactive 
+                      experinces. We don't have mechanism for dealing with it. This is where Microfrontend comes in.
+                </aside>
                 </section>
                 <section >
                     <h2 class="color1">Next Step Of Evolution</h2>
                     <img src="./assets/verticals-headline.png" height="500" alt="">
-                </section>
-                <section>
-                    <h2 class="color1">What is Microfrontend?</h2>
                     <aside class="notes">
-                            The idea is to think about a website as a composition of features. 
-                            On the basis of these feature, front-end app is decomposed into individual, semi-independent “microapps” which is loosely coupled.
-                            Each microapp can be managed by individual team.
-                        </aside>
+                        The idea is to think about a website as a composition of features. 
+                        On the basis of these feature, front-end app is decomposed into individual, semi-independent “microapps” which are loosely coupled.
+                        Each microapp can be managed by a independent team.  Each team has a distinct area of business or mission it cares about and specialises in. 
+                        A team is cross functional and develops its features end-to-end, from database to user interface.
+
+                    </aside>
                 </section>
                 <section>
                     <h2 class="color1">Companies which using Microfrontend</h2>
@@ -123,11 +137,9 @@
                         <img class="fragment fade-in-then-semi-out" src="./assets/zalando.png"  alt="">
                     </div>
 
-
+        
                     <aside class="notes">
-                            The idea is to think about a website as a composition of features. 
-                            On the basis of these feature, front-end app is decomposed into individual, semi-independent “microapps” which is loosely coupled.
-                            Each microapp can be managed by individual team.
+                        Major companies which are using Microfrontend architecture
                     </aside>
                 </section>
             </section>         
@@ -136,6 +148,14 @@
                   <h2 class="color1">Why we need Microfrontend?</h2> 
               </section>
               <section>
+                    <h2 class="color1">Development Speed</h2>
+                    <img src="assets/development-speed.jpg">
+                    <aside class="notes">
+                        The Microfrontend  architecture tackles the problem of productivity and speed by decomposing applications into manageable chunks that are faster to develop. 
+                        Since teams are autonomous therefore different teams can be working on different components simultaneously without having to waiting for other team to finish  work before starting theirs. 
+                    </aside>
+                </section> 
+              <section>
                 <h2 class="color1">Massive Restructuring</h2>
                 <li class="fragment fade-in-then-semi-out">Current technology becomes deprecrated</li>
                 <li class="fragment fade-in-then-semi-out">It's not popular anymore</li>
@@ -143,20 +163,23 @@
                 <li class="fragment fade-in-then-semi-out">Redesigning UI for entire application</li>
                 <img class="fragment fade-in-then-semi-out" src="./assets/monolithic.jpeg">
                 <aside class="notes">
-                   There are times when it becomes absolutely neccessary to rewrite whole codebase. Maybe current technology becomes deprecrated or maybe
-                   it's not popular anymore so it's not easy to find developers who can work on it or maybe current technology not suited for problem we trying to solve.
-                   But if we change technology of project having large codebase then it will take huge effort and time.
-                   As it happens when we switch from angularjs to Angular 2.
+                   There are times when it becomes absolutely neccessary to rewrite whole codebase. 
+                   Rewriting takes huge effort and time.
+                   As it happens when we switch from angularjs to Angular 2. But if we were using Microfrontend architecture then it would not that difficult to migrate. We can do it in piece by piece way
                 </aside>
               </section>
               <section>
-                <h2 class="color1">Upgrading Framework</h2>
-                <aside class="notes">
-                  It's not easy to upgrade a project when different teams working on same codebase. When I was ugrading angular 5
-                  to angular 7 there were lots of issues coming because other teams pushing code parallely. So as I was giving new release
-                  then new bugs comes up. Also I had made changes in around 300 files so it was very difficult to review and test it.
-                </aside>
+                    <h2 class="color1">Reduced Scope</h2>
+                    <img src="./assets/reduced-scope.jpg">
+                    <aside class="notes">
+                        When we works in large projects, we tries to know all things related to what we working on. But chances are  there may be 
+                        some blury part which you not aware of. You do something and some other things break which you don't know.
+                        But working in Microfrontend reduces scope so we now able to know everything about project.
+                    </aside>
+
+
               </section>
+             
               <section>
                   <h2 class="color1">Refactoring code</h2>
                   <pre>
@@ -196,22 +219,24 @@
                   </pre>
                   <aside class="notes">
                      This is GtLoginFormComponent. No one is using it right now. But it is still part of linckia's build.
-                     There may be so many things which is not used but still be part of our codebase. It's not easy to clean codebase when
-                     you have large codebase and modules are too tightly coupled with each other. Our technical debt keep on increasing. 
+                     There may be so many other things which is not used but still be part of our codebase. It's not easy to clean codebase when
+                     you have large codebase and modules which are too tightly coupled with each other.  
                   </aside>
               </section>
               <section>
                 <h2 class="color1">Performance</h2>
+                <img style="max-width: 500px;" class="fragment fade-in-then-semi-out"  src="./assets/waiting.jpg">
                 <aside class="notes">
-                  When we opens attendance page, we loads many components, service, css which it not needs to work. This is huge performance
-                  hindrance. We should load only those thing which it need. This problem keep on increasing as we add new module. There is no 
-                  proper mechnasim for loading resourse.
+                  When we opens attendance page, we loads all components, service, css . This is huge performance
+                  hindrance. At first, we should only load those resources which are absolutely necessary. This problem keep on increasing as we add new module. There is no 
+                  proper mechanism for loading resourse. But as Microfrontend architecture divide our codebase into chunks it would be easier for us to acheive it.
                 </aside>
               </section>
               <section>
                 <h2 class="color1">Testing</h2>
                 <aside class="notes">
-                  With current architecture it's diffcult to do testing. Even for small change we have to test entire application.
+                  With current architecture it's diffcult to do testing. 
+                  As our code have tightly coupled, Even for small change we have to test entire application.
                 </aside>
               </section>
               <section>
@@ -219,34 +244,34 @@
                 <aside class="notes">
                     When different team working across on same project then it's pretty hard to maintain contistency. 
                     For example in linckia in some place we have used store for state management and in some place we are using service. 
-                    So code readablity decreased
+                    So code readablity keeps on decreasing with time. Howerver in Microfrontend, as teams are working on independent microapp , it would
+                    be easy to enforce coding standards across the app.
+                </aside>
+              </section>
+              <section>
+                <h2 class="color1">Upgrading Framework</h2>
+                <img class="fragment fade-in-then-semi-out"  src="./assets/angular7.png">
+                <aside class="notes">
+                  For new features, better security, support and performance we have to keep on upgrading our framework.
+                  It's not easy to upgrade a project when different teams working on same codebase and we have huge codebase . When I was ugrading angular 5
+                  to angular 7 there were lots of issues coming because other teams pushing code parallely. 
+                  Also I had made changes in around 300 files so it was very difficult to review and test.
+                  Since in Microfrontend code divided into small chunks , it is easy to upgrade
                 </aside>
               </section>
               <section>
                 <h2 class="color1">Resilence</h2>
                 <aside class="notes">
-                    It may happen if someone has written bad code then it may effect whole project.
+                    It may happen if someone has written bad code then it may effect whole project. But In Micro frontend web apps are distributed in small chunks of services starting from the UI to database that works independently. 
+                    So, even if one feature faces the issue, it doesn’t affect the rest of the web app. 
+                    And this also makes possible to recover from the error faster.
                 </aside>
               </section>
               <section>
-                    <h2 class="color1">Better Maintenance</h2>
+                    <h2 class="color1"> Maintenance</h2>
                     <aside class="notes">
-                        Instead of huge holistic codes, the code-base is distributed according to the feature and functionality and a specific team maintains them.
+                        Instead of huge code, the code-base is distributed according to the feature and functionality and a specific team maintains them.
                         This makes it easier to maintain the app.
-                    </aside>
-                </section>
-                <section>
-                    <h2 class="color1">High Resilience</h2>
-                    <aside class="notes">
-                        In Micro frontend web apps are distributed in small chunks of services starting from the UI to database that works independently. 
-                        So, even if one feature faces the issue, it doesn’t affect the rest of the web app. 
-                        And this feature makes it possible to recover from the error faster.
-                    </aside>
-                </section>
-                <section>
-                    <h2 class="color1">Highly Scalable</h2>
-                    <aside class="notes">
-                        Because of its modular structure micro frontend is highly scalable when you need to grow the business.
                     </aside>
                 </section>
                 <section>
@@ -258,29 +283,36 @@
                 </section>  
                 <section>
                     <h2 class="color1">Flexibility in Using Technologies </h2>
+                    <img src="./assets/stack.png">
                     <aside class="notes">
                         You do know by now that each micro frontend can be written using a different technology. 
                         This simplifies the selection of the most appropriate tech stack for the specific needs of your service. 
                     </aside>
                 </section>
+              
+            </section> 
+            <section>
                 <section>
-                    <h2 class="color1">Improved Productivity and Speed</h2>
-                    <aside class="notes">
-                        The microservices architecture tackles the problem of productivity and speed by decomposing applications into manageable services that are faster to develop. 
-                        Different teams can be working on different components simultaneously without having to wait for one team to finish a chunk of work before starting theirs. 
-                    </aside>
-                </section> 
-            </section>        
+                
+                    <h2 class="color1">Microfrontend architecture flow</h2>
+                    <img style="max-width: 700px;"  src="./assets/what-is-micro-frontends.jpg">
+                </section>
+                <section>
+                    <h2 class="color1">GreytHR Microfrontend architecture flow</h2>
+                    <img style="max-width: 700px;"  src="./assets/architecture.png">
+                </section>
+            </section>   
+            <section>
+                    <section>
+                        <img src="./assets//Thank_you_icon.jpg" height="600" alt="" />
+                    </section>
+                </section>    
             <section>
                 <section>
                     <h2 class="color1">QA</h2>
                 </section>
             </section>
-            <section>
-                <section>
-                    <img src="./assets//Thank_you_icon.jpg" height="600" alt="" />
-                </section>
-            </section>
+           
         </div>
     </div>
 
